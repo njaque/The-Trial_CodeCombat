@@ -1,0 +1,14 @@
+while True:
+    enemy = hero.findNearestEnemy()
+    if enemy and hero.distanceTo(enemy) < 55:
+        if hero.isReady("jump"):
+            hero.jumpTo(enemy) 
+        else:    
+            hero.attack(enemy)
+    else:
+        items = hero.findItems()
+        itemIndex = 0
+        while itemIndex < len(items):
+            item = items[itemIndex]
+            hero.moveXY(item.pos.x, item.pos.y)
+            itemIndex += 1
