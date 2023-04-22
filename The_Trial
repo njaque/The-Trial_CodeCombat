@@ -1,14 +1,63 @@
-while True:
-    enemy = hero.findNearestEnemy()
-    if enemy and hero.distanceTo(enemy) < 55:
-        if hero.isReady("jump"):
-            hero.jumpTo(enemy) 
-        else:    
-            hero.attack(enemy)
+def findNearest(target):
+    if target == "enemy":
+        return hero.findNearestEnemy()
+    elif target == "item":
+        return hero.findNearestItem()
     else:
-        items = hero.findItems()
-        itemIndex = 0
-        while itemIndex < len(items):
-            item = items[itemIndex]
-            hero.moveXY(item.pos.x, item.pos.y)
-            itemIndex += 1
+        return None
+
+while True:
+    nearestEnemy = findNearest("enemy")
+    nearestItem = findNearest("item")
+    
+    while (nearestEnemy and nearestEnemy.pos.y < 43) or (nearestItem and nearestItem.pos.y < 43):
+        
+        if nearestEnemy and nearestEnemy.pos.y < 43:
+            hero.attack(nearestEnemy)
+            nearestEnemy = findNearest("enemy")
+        
+        if nearestItem and nearestItem.pos.y < 43:
+            hero.moveXY(nearestItem.pos.x, nearestItem.pos.y)
+            nearestItem = findNearest("item")
+            
+    if nearestItem and nearestItem.pos.x < 43:
+        break
+
+hero.moveXY(17, 33)
+
+while True:
+    nearestEnemy = findNearest("enemy")
+    nearestItem = findNearest("item")
+    
+    while (nearestEnemy and nearestEnemy.pos.x < 43) or (nearestItem and nearestItem.pos.x < 43):
+        
+        if nearestEnemy and nearestEnemy.pos.x < 43:
+            hero.attack(nearestEnemy)
+            nearestEnemy = findNearest("enemy")
+            
+        if nearestItem and nearestItem.pos.x < 43:
+            hero.moveXY(nearestItem.pos.x, nearestItem.pos.y)
+            nearestItem = findNearest("item")
+            
+    if nearestItem and nearestItem.pos.y > 100:
+        break
+
+while True:
+    nearestEnemy = findNearest("enemy")
+    nearestItem = findNearest("item")    
+        
+    while (nearestEnemy and nearestEnemy.pos.y > 100) or (nearestItem and nearestItem.pos.y > 100):
+    
+        if nearestEnemy and nearestEnemy.pos.y > 100:
+            hero.attack(nearestEnemy)
+            nearestEnemy = findNearest("enemy")
+        
+        if nearestItem and nearestItem.pos.y > 100:
+            hero.moveXY(nearestItem.pos.x, nearestItem.pos.y)
+            nearestItem = findNearest("item")
+    
+    if nearestEnemy and nearestEnemy.pos.y < 100:
+        break
+
+while nearestEnemy.health > 0:
+    hero.attack(nearestEnemy)
